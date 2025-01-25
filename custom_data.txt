@@ -1,0 +1,11 @@
+
+What is Machine Learning?---Machine Learning is a subset of artificial intelligence that involves training algorithms to learn patterns and make predictions based on data.
+What are features in Machine Learning?---Features are individual measurable properties or characteristics of a phenomenon being observed, used as input to a model.
+What is a dataset in Machine Learning?---A dataset is a collection of data points, often organized in rows and columns, used for training or testing machine learning models.
+What is supervised learning?---Supervised learning is a type of machine learning where the model is trained on labeled data, meaning each input has a corresponding output.
+What is unsupervised learning?---Unsupervised learning is a type of machine learning where the model identifies patterns in data without the need for labeled outputs.
+What is overfitting in Machine Learning?---Overfitting occurs when a model learns the training data too well, including its noise, leading to poor performance on unseen data.
+What is underfitting in Machine Learning?---Underfitting occurs when a model is too simple to capture the underlying structure of the data, resulting in poor performance on both training and test sets.
+What are common evaluation metrics for classification tasks?---Common metrics include accuracy, precision, recall, F1-score, and ROC-AUC.
+What are common evaluation metrics for regression tasks?---Common metrics include Mean Squared Error (MSE), Mean Absolute Error (MAE), and R-squared.
+What is feature scaling?---Feature scaling is the process of normalizing or standardizing the range of independent variables to ensure they contribute equally to the model.
