@@ -11,7 +11,7 @@ class QAView(APIView):
 
     def post(self, request):
         # Load the custom-trained model
-        MODEL_PATH = Path(settings.BASE_DIR) / "custom_flan_t5_lora"
+        MODEL_PATH = Path(settings.BASE_DIR) / "custom_flan_t5"
         tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH)
         model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_PATH)
 
@@ -22,14 +22,7 @@ class QAView(APIView):
         # Generate answer using the custom-trained model
         inputs = tokenizer(question, return_tensors="pt", truncation=True, max_length=512)
         outputs = model.generate(
-            **inputs, 
-            max_length=512,
-            num_return_sequences=1,
-            do_sample=True,  # Enable sampling
-            temperature=0.7,  # Control randomness
-            top_k=50,  # Top-k sampling
-            top_p=0.95,  # Nucleus sampling
-            no_repeat_ngram_size=2  # Prevent repetition
+            **inputs, max_length=512, num_beams=3, early_stopping= False
         )
         answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
 

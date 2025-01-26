@@ -1,11 +1,37 @@
-
-What is Machine Learning?---Machine Learning is a subset of artificial intelligence that involves training algorithms to learn patterns and make predictions based on data.
-What are features in Machine Learning?---Features are individual measurable properties or characteristics of a phenomenon being observed, used as input to a model.
-What is a dataset in Machine Learning?---A dataset is a collection of data points, often organized in rows and columns, used for training or testing machine learning models.
-What is supervised learning?---Supervised learning is a type of machine learning where the model is trained on labeled data, meaning each input has a corresponding output.
-What is unsupervised learning?---Unsupervised learning is a type of machine learning where the model identifies patterns in data without the need for labeled outputs.
-What is overfitting in Machine Learning?---Overfitting occurs when a model learns the training data too well, including its noise, leading to poor performance on unseen data.
-What is underfitting in Machine Learning?---Underfitting occurs when a model is too simple to capture the underlying structure of the data, resulting in poor performance on both training and test sets.
-What are common evaluation metrics for classification tasks?---Common metrics include accuracy, precision, recall, F1-score, and ROC-AUC.
-What are common evaluation metrics for regression tasks?---Common metrics include Mean Squared Error (MSE), Mean Absolute Error (MAE), and R-squared.
-What is feature scaling?---Feature scaling is the process of normalizing or standardizing the range of independent variables to ensure they contribute equally to the model.
+What is supervised learning?---Supervised learning is a type of machine learning where the model is trained on labeled data.
+Define overfitting.---Overfitting occurs when a model learns the training data too well, capturing noise and details that do not generalize to new data.
+What is a neural network?---A neural network is a series of algorithms that attempt to recognize underlying relationships in a set of data through a process that mimics the way the human brain operates.
+Explain the bias-variance tradeoff.---The bias-variance tradeoff is the balance between the error introduced by bias and the variance. High bias can cause underfitting, while high variance can cause overfitting.
+What is cross-validation?---Cross-validation is a technique for assessing how a model will generalize to an independent dataset, typically by partitioning the data into subsets, training the model on some subsets, and validating it on others.
+Define precision and recall.---Precision is the ratio of correctly predicted positive observations to the total predicted positives. Recall is the ratio of correctly predicted positive observations to all observations in the actual class.
+What is a confusion matrix?---A confusion matrix is a table used to describe the performance of a classification model by displaying the true positives, false positives, true negatives, and false negatives.
+Explain the difference between classification and regression.---Classification is about predicting a label or category, while regression is about predicting a continuous quantity.
+What is a decision tree?---A decision tree is a model that uses a tree-like graph of decisions and their possible consequences, used for both classification and regression tasks.
+Define ensemble learning.---Ensemble learning is a technique where multiple models are trained to solve the same problem and combined to get better results.
+What is the purpose of regularization?---Regularization involves adding a penalty to the loss function to prevent overfitting by discouraging complex models.
+Explain the concept of clustering.---Clustering is an unsupervised learning technique that groups similar data points together based on certain features.
+What is the k-nearest neighbors algorithm?---The k-nearest neighbors algorithm is a non-parametric method used for classification and regression, where the input consists of the k closest training examples in the feature space.
+Define the term 'feature engineering'.---Feature engineering is the process of using domain knowledge to extract features from raw data to improve the performance of machine learning models.
+What is gradient descent?---Gradient descent is an optimization algorithm used to minimize the loss function by iteratively moving towards the steepest descent as defined by the negative of the gradient.
+Explain the difference between bagging and boosting.---Bagging involves training multiple models in parallel on different subsets of data and averaging their predictions, while boosting trains models sequentially, each trying to correct the errors of the previous one.
+What is a support vector machine?---A support vector machine is a supervised learning model that analyzes data for classification and regression analysis by finding the hyperplane that best separates the classes.
+Define the term 'dimensionality reduction'.---Dimensionality reduction is the process of reducing the number of random variables under consideration by obtaining a set of principal variables.
+What is the purpose of the ROC curve?---The ROC curve is a graphical plot that illustrates the diagnostic ability of a binary classifier system as its discrimination threshold is varied.
+Explain the concept of a random forest.---A random forest is an ensemble learning method that constructs multiple decision trees during training and outputs the mode of the classes for classification or mean prediction for regression.
+What is the difference between L1 and L2 regularization?---L1 regularization adds the absolute value of the magnitude of coefficients as a penalty term to the loss function, leading to sparse models. L2 regularization adds the squared magnitude of coefficients as a penalty term, leading to small but non-zero coefficients.
+Define the term 'hyperparameter'.---A hyperparameter is a parameter whose value is set before the learning process begins and controls the learning process.
+What is the purpose of the activation function in a neural network?---The activation function introduces non-linearity into the output of a neuron, allowing the network to model complex data.
+Explain the concept of reinforcement learning.---Reinforcement learning is a type of machine learning where an agent learns to make decisions by performing actions and receiving rewards or penalties.
+What is a convolutional neural network?---A convolutional neural network is a class of deep neural networks, most commonly applied to analyzing visual imagery, that uses convolutional layers to filter inputs for useful information.
+Define the term 'epoch' in the context of machine learning.---An epoch refers to one complete pass through the entire training dataset during the training process.
+What is the purpose of dropout in neural networks?---Dropout is a regularization technique used to prevent overfitting by randomly dropping units from the neural network during training.
+Explain the concept of transfer learning.---Transfer learning involves using a pre-trained model on a new problem by leveraging the knowledge the model has learned from a previous task.
+What is a recurrent neural network?---A recurrent neural network is a class of neural networks where connections between nodes form directed cycles, allowing them to maintain a memory of previous inputs.
+Define the term 'learning rate'.---The learning rate is a hyperparameter that controls how much to change the model in response to the estimated error each time the model weights are updated.
+What is the purpose of the validation set?---The validation set is used to tune hyperparameters and provide an unbiased evaluation of a model fit on the training dataset while adjusting model parameters.
+Explain the concept of a generative adversarial network.---A generative adversarial network is a class of machine learning frameworks where two neural networks, a generator and a discriminator, contest with each other to generate new, synthetic instances of data that can pass for real data.
+What is the difference between parametric and non-parametric models?---Parametric models summarize data with a set of parameters of fixed size, while non-parametric models can grow in complexity as they learn from data.
+Define the term 'feature scaling'.---Feature scaling is a method used to normalize the range of independent variables or features of data, often used to improve the performance and training stability of machine learning models.
+What is the purpose of the confusion matrix?---The confusion matrix is used to evaluate the performance of a classification algorithm by showing the true positives, false positives, true negatives, and false negatives.
+Explain the concept of the F1 score.---The F1 score is the harmonic mean of precision and recall, providing a single metric that balances both concerns in binary classification.
+What is the difference between batch gradient descent and stochastic gradient descent?---Batch gradient descent computes the gradient using the entire dataset, while stochastic gradient descent computes the gradient using a single sample, leading to faster but noisier updates.

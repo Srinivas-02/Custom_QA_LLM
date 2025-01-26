@@ -1,28 +1,17 @@
+import torch
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Trainer, TrainingArguments
 from datasets import Dataset
-from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
-import torch
+
+# Check if CUDA is available and set device
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load tokenizer and model
 model_name = "google/flan-t5-small"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-
-# LoRA Configuration
-lora_config = LoraConfig(
-    r=16,  # Rank of LoRA adaptation
-    lora_alpha=32,
-    target_modules=["q", "v"],
-    lora_dropout=0.1,
-    bias="none"
-)
-
-# Prepare model for LoRA training
-model = prepare_model_for_kbit_training(model)
-model = get_peft_model(model, lora_config)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name).to(device)
 
 # Load custom data
-data_path = "./custom_data.txt"
+data_path = "custom_data.txt"
 with open(data_path, "r") as file:
     lines = file.readlines()
 
@@ -38,46 +27,38 @@ for line in lines:
 data = {"input_text": questions, "target_text": answers}
 dataset = Dataset.from_dict(data)
 
+# Define the task-specific prefix
+prefix = "answer the question: "
+
 # Tokenize dataset
 def preprocess_function(examples):
+    inputs = [prefix + question for question in examples["input_text"]]
     model_inputs = tokenizer(
-        examples["input_text"], 
-        max_length=512, 
-        truncation=True, 
-        padding='max_length'
+        inputs, max_length=512, truncation=True, padding="max_length"
     )
-    
-    with tokenizer.as_target_tokenizer():
-        labels = tokenizer(
-            examples["target_text"], 
-            max_length=512, 
-            truncation=True, 
-            padding='max_length'
-        )
-    
+    labels = tokenizer(
+        examples["target_text"], max_length=512, truncation=True, padding="max_length"
+    )
     model_inputs["labels"] = labels["input_ids"]
     return model_inputs
 
 # Apply tokenization
 tokenized_dataset = dataset.map(
-    preprocess_function, 
-    batched=True, 
-    remove_columns=dataset.column_names
+    preprocess_function, batched=True, remove_columns=dataset.column_names
 )
-
-# Convert to PyTorch dataset
-tokenized_dataset.set_format("torch")
 
 # Training Arguments
 training_args = TrainingArguments(
-    output_dir="./custom_flan_t5_lora",
+    output_dir="./custom_flan_t5",
     per_device_train_batch_size=4,
-    num_train_epochs=20,
-    learning_rate=1e-5,
+    num_train_epochs=3,
+    learning_rate=5e-5,
     weight_decay=0.01,
     logging_dir="./logs",
     logging_steps=10,
-    save_strategy="no",
+    save_strategy="epoch",
+    evaluation_strategy="epoch",
+    load_best_model_at_end=True,
 )
 
 # Trainer
@@ -85,13 +66,14 @@ trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=tokenized_dataset,
+    eval_dataset=tokenized_dataset,
 )
 
 # Train the model
 trainer.train()
 
-# Save LoRA weights
-model.save_pretrained("./custom_flan_t5_lora")
-tokenizer.save_pretrained("./custom_flan_t5_lora")
+# Save the fine-tuned model and tokenizer
+model.save_pretrained("./custom_flan_t5")
+tokenizer.save_pretrained("./custom_flan_t5")
 
-print("LoRA Model trained and saved successfully!")
+print("Model fine-tuned and saved successfully!")
