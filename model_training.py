@@ -1,5 +1,6 @@
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Trainer, TrainingArguments
 from datasets import Dataset
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 import torch
 
 # Load tokenizer and model
@@ -7,8 +8,21 @@ model_name = "google/flan-t5-small"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
+# LoRA Configuration
+lora_config = LoraConfig(
+    r=16,  # Rank of LoRA adaptation
+    lora_alpha=32,
+    target_modules=["q", "v"],
+    lora_dropout=0.1,
+    bias="none"
+)
+
+# Prepare model for LoRA training
+model = prepare_model_for_kbit_training(model)
+model = get_peft_model(model, lora_config)
+
 # Load custom data
-data_path = "./custom_data.txt"  # Path to your text file
+data_path = "./custom_data.txt"
 with open(data_path, "r") as file:
     lines = file.readlines()
 
@@ -33,7 +47,6 @@ def preprocess_function(examples):
         padding='max_length'
     )
     
-    # Tokenize targets with the same padding
     with tokenizer.as_target_tokenizer():
         labels = tokenizer(
             examples["target_text"], 
@@ -45,7 +58,7 @@ def preprocess_function(examples):
     model_inputs["labels"] = labels["input_ids"]
     return model_inputs
 
-# Apply tokenization with batched=True
+# Apply tokenization
 tokenized_dataset = dataset.map(
     preprocess_function, 
     batched=True, 
@@ -55,20 +68,19 @@ tokenized_dataset = dataset.map(
 # Convert to PyTorch dataset
 tokenized_dataset.set_format("torch")
 
-# Set up training arguments
+# Training Arguments
 training_args = TrainingArguments(
-    output_dir="./custom_flan_t5",
-    per_device_train_batch_size= 16,
+    output_dir="./custom_flan_t5_lora",
+    per_device_train_batch_size=4,
     num_train_epochs=20,
-    save_steps=99999,
-    save_strategy="no",
-    save_total_limit=0,
-    evaluation_strategy="no",
+    learning_rate=1e-5,
+    weight_decay=0.01,
     logging_dir="./logs",
     logging_steps=10,
+    save_strategy="no",
 )
 
-# Set up Trainer
+# Trainer
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -78,8 +90,8 @@ trainer = Trainer(
 # Train the model
 trainer.train()
 
-# Save the model and tokenizer
-trainer.save_model("./custom_flan_t5")
-tokenizer.save_pretrained("./custom_flan_t5")
+# Save LoRA weights
+model.save_pretrained("./custom_flan_t5_lora")
+tokenizer.save_pretrained("./custom_flan_t5_lora")
 
-print("Model trained and saved successfully!")
+print("LoRA Model trained and saved successfully!")
